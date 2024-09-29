@@ -1,10 +1,6 @@
-import { Button, duration } from '@mui/material';
-import { redraw } from 'plotly.js';
-import { useEffect, useState } from 'react';
 import Plot from 'react-plotly.js';
-import Plotly from 'plotly.js';
 
-const KMeans = ({data, pointClassifications, setPlotlyInstance, iterations, curIteration, runAnimations}) => {
+const KMeans = ({data, pointClassifications, setPlotlyInstance, iterations, handleGraphClick}) => {
 
     const frames = iterations.map((centroids, idx) => (
         {
@@ -27,14 +23,21 @@ const KMeans = ({data, pointClassifications, setPlotlyInstance, iterations, curI
       }));
 
       const initialTraces = frames[0].data.map((val, idx) => {
-        if (idx == 0) {
+        if (idx === 0) {
             val.marker.color = Array.from({length: 150}, () => 'grey')
         }
         return val
       });
 
+
   return (
-        <Plot
+
+        <div
+        onClick={handleGraphClick} // Capture click anywhere on the graph div
+        style={{ width: '100%', height: '100%' }}
+        className='justify-center items-center flex'
+        >
+            <Plot
             data={initialTraces}
             layout={{
             title: 'KMeans Clustering Animation',
@@ -47,6 +50,7 @@ const KMeans = ({data, pointClassifications, setPlotlyInstance, iterations, curI
             onInitialized={(figure, graphDiv) => setPlotlyInstance(graphDiv)}
             onUpdate={(figure, graphDiv) => setPlotlyInstance(graphDiv)}
         />
+        </div>
 )}
 
 export default KMeans
